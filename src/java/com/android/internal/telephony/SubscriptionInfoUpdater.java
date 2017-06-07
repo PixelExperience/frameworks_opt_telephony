@@ -470,21 +470,22 @@ public class SubscriptionInfoUpdater extends Handler {
                     editor.putInt(CURR_SUBID + slotId, subId);
                     editor.apply();
                 }
-
-                // Update set of enabled carrier apps now that the privilege rules may have changed.
-                CarrierAppUtils.disableCarrierAppsUntilPrivileged(mContext.getOpPackageName(),
-                        mPackageManager, TelephonyManager.getDefault(),
-                        mContext.getContentResolver(), mCurrentlyActiveUserId);
-
-                if (mIsRecordLoaded[slotId] == true) {
-                    broadcastSimStateChanged(slotId, IccCardConstants.
-                            INTENT_VALUE_ICC_LOADED, null);
-                    broadcastSimCardStateChanged(slotId, TelephonyManager.SIM_STATE_PRESENT);
-                    broadcastSimApplicationStateChanged(slotId, TelephonyManager.SIM_STATE_LOADED);
-                    updateCarrierServices(slotId, IccCardConstants.INTENT_VALUE_ICC_LOADED);
-                    mIsRecordLoaded[slotId] = false;
-                }
             }
+        }
+
+
+        // Update set of enabled carrier apps now that the privilege rules may have changed.
+        CarrierAppUtils.disableCarrierAppsUntilPrivileged(mContext.getOpPackageName(),
+                mPackageManager, TelephonyManager.getDefault(),
+                mContext.getContentResolver(), mCurrentlyActiveUserId);
+
+        if (mIsRecordLoaded[loadedSlotId] == true) {
+            broadcastSimStateChanged(loadedSlotId, IccCardConstants.
+                    INTENT_VALUE_ICC_LOADED, null);
+            broadcastSimCardStateChanged(loadedSlotId, TelephonyManager.SIM_STATE_PRESENT);
+            broadcastSimApplicationStateChanged(loadedSlotId, TelephonyManager.SIM_STATE_LOADED);
+            updateCarrierServices(loadedSlotId, IccCardConstants.INTENT_VALUE_ICC_LOADED);
+            mIsRecordLoaded[loadedSlotId] = false;
         }
     }
 
