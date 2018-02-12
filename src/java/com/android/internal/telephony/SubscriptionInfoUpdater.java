@@ -279,7 +279,7 @@ public class SubscriptionInfoUpdater extends Handler {
                 break;
 
             case EVENT_SIM_IO_ERROR:
-                handleSimAbsentOrError(msg.arg1, IccCardConstants.INTENT_VALUE_ICC_CARD_IO_ERROR);
+                handleSimError(msg.arg1);
                 break;
 
             case EVENT_SIM_RESTRICTED:
