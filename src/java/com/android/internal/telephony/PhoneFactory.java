@@ -24,6 +24,7 @@ import android.content.pm.PackageManager;
 import android.net.LocalServerSocket;
 import android.os.Looper;
 import android.os.ServiceManager;
+import android.os.SystemProperties;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.provider.Settings.SettingNotFoundException;
@@ -227,8 +228,11 @@ public class PhoneFactory {
                 sMadeDefaults = true;
 
                 Rlog.i(LOG_TAG, "Creating SubInfoRecordUpdater ");
-                sSubInfoRecordUpdater = telephonyComponentFactory.makeSubscriptionInfoUpdater(
-                        context, sPhones, sCommandsInterfaces);
+                sSubInfoRecordUpdater = SystemProperties.get("persist.vendor.qti.pie.telephony", "0").equals("0")
+                        ? telephonyComponentFactory.makeSubscriptionInfoUpdater(
+                                context, sPhones, sCommandsInterfaces)
+                        : telephonyComponentFactory.makeSubscriptionInfoUpdater(
+                                BackgroundThread.get().getLooper(), context, sPhones, sCommandsInterfaces);
                 SubscriptionController.getInstance().updatePhonesAvailability(sPhones);
 
                 // Start monitoring after defaults have been made.
