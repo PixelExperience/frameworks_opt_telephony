@@ -2059,17 +2059,8 @@ public class DcTracker extends Handler {
         if (initialAttachApnSetting == null) {
             if (DBG) log("setInitialAttachApn: X There in no available apn");
         } else {
-            String numeric = mPhone.getOperatorNumeric();
-            if (numeric != null &&
-                    !numeric.equalsIgnoreCase(initialAttachApnSetting.getOperatorNumeric())) {
-                if (DBG) log("setInitialAttachApn: use empty apn");
-                //Add empty apn and send attach request
-                initialAttachApnSetting = ApnSetting.makeApnSetting(-1, numeric, "", "", "", -1,
-                        null, "", -1, "", "", 0, ApnSetting.TYPE_IA, ApnSetting.PROTOCOL_IPV4V6,
-                        ApnSetting.PROTOCOL_IPV4V6, true, 0, 0, false, 0, 0, 0, 0, -1, "");
-             }
-
             if (DBG) log("setInitialAttachApn: X selected Apn=" + initialAttachApnSetting);
+
             mDataServiceManager.setInitialAttachApn(createDataProfile(initialAttachApnSetting,
                             initialAttachApnSetting.equals(getPreferredApn())),
                     mPhone.getServiceState().getDataRoamingFromRegistration(), null);
@@ -3360,26 +3351,6 @@ public class DcTracker extends Handler {
         }
 
         apnList = sortApnListByPreferred(apnList);
-
-        if (requestedApnType.equals(PhoneConstants.APN_TYPE_DEFAULT) && mPreferredApn == null) {
-            ApnContext apnContext = mApnContextsByType.get(ApnSetting.TYPE_DEFAULT);
-            // If restored to default APN, the APN ID might be changed.
-            // Here reset with the same APN added newly.
-            if (apnContext != null && apnContext.getApnSetting() != null
-                    && apnContext.getState() == DctConstants.State.CONNECTED) {
-                for (ApnSetting apnSetting : apnList) {
-                    if (apnSetting.equals(apnContext.getApnSetting(),
-                            mPhone.getServiceState().getDataRoamingFromRegistration())) {
-                        if (DBG) log("buildWaitingApns: reset preferred APN to "
-                                + apnSetting);
-                        mPreferredApn = apnSetting;
-                        setPreferredApn(mPreferredApn.getId());
-                        break;
-                    }
-                }
-            }
-        }
-
         if (DBG) log("buildWaitingApns: " + apnList.size() + " APNs in the list: " + apnList);
         return apnList;
     }
