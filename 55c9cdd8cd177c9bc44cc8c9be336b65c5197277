@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "de4bce56_70ea659c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000713
+      },
+      "writtenOn": "2022-10-23T14:06:01Z",
+      "side": 1,
+      "message": "This makes LTE work at least on sargo with stock blobs",
+      "revId": "55c9cdd8cd177c9bc44cc8c9be336b65c5197277",
+      "serverId": "8ba0da3e-d57f-4bbe-ac74-faf358ba962a"
+    }
+  ]
+}
